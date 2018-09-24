@@ -8,7 +8,7 @@ This is useful if you want to trigger some action upon swiping a DOM element, wo
 ```javascript
 var sw = new Swiper(callback, elementId, direction);
 ```
-
+### Properties
 | Property | Default | Type | Description |
 |---|---|---|---|
 |callback| `undefined` | `function` |A function to be triggered when the specified event occurs.|
