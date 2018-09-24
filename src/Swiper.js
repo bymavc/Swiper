@@ -1,6 +1,7 @@
 function Swiper(callback, elementId, direction){
 
     let element = document.getElementById(elementId);
+    let dir = (direction == null) ? 'right' : direction;
 
     element.addEventListener('mousedown', handleTouchStart, false);
     element.addEventListener('touchstart', handleTouchStart, false);
@@ -25,7 +26,7 @@ function Swiper(callback, elementId, direction){
         if(!touchstartX){ return; };
 
         touchendX = getTouches(e)[0].clientX;
-        switch(direction){
+        switch(dir){
             case 'right':
                 handleSwipeRight();
                 break;
