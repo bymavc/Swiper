@@ -10,7 +10,7 @@ var sw = new Swiper(callback, elementId, direction);
 ```
 ### Properties
 | Property | Default | Type | Description |
-|---|---|---|---|
+|---|:---:|:---:|---|
 |callback| `undefined` | `function` |A function to be triggered when the specified event occurs.|
 |elementId| `undefined` | `string` |The id of the DOM element to be swiped.|
 |direction| `right` | `string` |The direction of the swipe: `left` or `right`. |
