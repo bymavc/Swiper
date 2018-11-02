@@ -10,11 +10,6 @@ function Swiper(callback, elementId, direction) {
      */
     let dir = (direction == null) ? 'right' : direction;
 
-    element.addEventListener('mousedown', handleTouchStart, false);
-    element.addEventListener('touchstart', handleTouchStart, false);
-    element.addEventListener('touchmove', handleTouchMove, false);
-    element.addEventListener('mousemove', handleTouchMove, false);
-
     /**
      * touchstartX will keep the horizontal
      * coordinates where the touch started
@@ -32,43 +27,50 @@ function Swiper(callback, elementId, direction) {
      * Gets touch coordinates
      * @param {Object} e - Event Passed
      */
-    function getTouches(e) {
-        return e.touches || e.originalEvent.touches;
-    }
+    function getTouches(e) { return e.changedTouches ? e.changedTouches[0] : e };
 
     /**
      * Stores coordinates where touch started
-     * @param {Object} e - Event Started
+     * @param {Object} e - Event
      */
-    function handleTouchStart(e) {
-        touchstartX = getTouches(e)[0].clientX;
-    };
+    function handleTouchStart(e) { touchstartX = getTouches(e).clientX };
 
     /**
-     * Triggers an action based on the direction of the pointer
-     * @param {Object} e - Event Started
+     * Triggers an action based on the direction of the swipe
+     * @param {Object} e - Event
      */
-    function handleTouchMove(e) {
+    function handleTouchEnd(e) {
         if (!touchstartX) {
             return;
         };
 
-        touchendX = getTouches(e)[0].clientX;
+        touchendX = getTouches(e).clientX;
+        let difference = touchendX - touchstartX;
+
         switch (dir) {
             case 'right':
-                handleSwipeRight();
+                handleSwipeRight(difference);
                 break;
             case 'left':
-                handleSwipeLeft();
+                handleSwipeLeft(difference);
                 break;
         }
+
+        touchstartX = null;
+        touchendX = null;
     }
+
+    /**
+     * Prevents default on touchmove
+     * @param {Object} e - Event
+     */
+    function handleTouchMove(e) { e.preventDefault() };
 
     /**
      * Executes callback if swiped right
      */
-    function handleSwipeRight() {
-        if (touchstartX <= touchendX) {
+    function handleSwipeRight(swipe) {
+        if (swipe > 0) {
             callback();
         }
     }
@@ -77,9 +79,15 @@ function Swiper(callback, elementId, direction) {
      * Executes callback if swiped left
      */
     function handleSwipeLeft() {
-        if (touchstartX >= touchendX) {
+        if (swipe < 0) {
             callback();
         }
     }
 
+    element.addEventListener('mousedown', handleTouchStart, false);
+    element.addEventListener('touchstart', handleTouchStart, false);
+    element.addEventListener("touchend", handleTouchEnd, false);
+    element.addEventListener("mouseup", handleTouchEnd, false)
+    element.addEventListener('touchmove', handleTouchMove, false);
+    element.addEventListener('mousemove', handleTouchMove, false);
 }
