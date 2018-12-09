@@ -78,7 +78,7 @@ function Swiper(callback, elementId, direction) {
     /**
      * Executes callback if swiped left
      */
-    function handleSwipeLeft() {
+    function handleSwipeLeft(swipe) {
         if (swipe < 0) {
             callback();
         }
